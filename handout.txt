@@ -1,0 +1,31 @@
+Simulate Linear, Random, and Prime probing using tables, (boolean arrays), each of size 1009 for values of α ranging from 0.1 to 0.9 in increments of 0.05.
+
+Before simulating the average number of probes for a particular value of α, fill each table according to its respective hash method.
+
+To simulate the average number of probes for each method and value of  α, use a random number generator to simulate a key value in the range of the table size:
+
+key = rand()%tableSize;
+
+Simulate 1000 different entries into the table to compute the average number of probes under each scenario.  (When doing the simulation, you obviously do not enter any meaningful data into the table other than set the array entry to true to indicate that it is occupied.)
+
+Hand in a plot of the results for the three methods all on one graph, neatly labeled and titled.
+
+------------
+PSEUDO CODE:
+------------
+
+
+        for alpha = 0.10 to 0.90 incrementing by 0.05
+              probes = 0
+              for 1000 times
+                    clearHashTable( )
+                    populate the hash table to its alpha level using the hash method being simulated
+                    for 1000 times
+                using the given method, simulate a hash into the current table configuration by
+                randomly setting a key and incrementing probes until an open position is found.
+                    end 1000 single probes on a given table
+              end 1000 different tables loaded to a given alpha level
+              output the average no. of probes:  probes/1e6
+        end alpha loop
+
+Note:  When doing Prime probing, you may have to experiment with incrementing by different prime values to find a value that gives results different from linear probing.
