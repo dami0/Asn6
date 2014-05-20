@@ -4,7 +4,9 @@
 #include <cstdlib>
 
 bool hashedTable[1009] = {false} ;
-int tableSize = 1009;
+int tableSize = 1009 ;
+int key = rand()%tableSize;
+
 unsigned long long linear = 0, prime = 0, amtRandom = 0;
 
 void clearHashTable( bool hashArray[] )
@@ -13,14 +15,13 @@ void clearHashTable( bool hashArray[] )
         hashArray[i] = false;
 }
 
-void generateTable( bool hashArray[], int percentage, int &key )
+void generateTable( bool hashArray[], int percentage )
 {
 
-    int value = key;
+    int value = rand()%tableSize;
+
     int bound = ceil( tableSize * ( percentage/100.0 ) );
     int prime = 17;
-
-
 
     for(int i = 0; i < bound ; i++)
     {
@@ -32,10 +33,9 @@ void generateTable( bool hashArray[], int percentage, int &key )
     }
 }
 
-void linearProbingMethod( bool hashArray[] , int & key)
+void linearProbingMethod( bool hashArray[] )
 {
-    int insertion = key;
-    int tries = 0;
+    int insertion = rand()%tableSize;
 
         while (hashArray[insertion] == true)
         {
@@ -47,14 +47,13 @@ void linearProbingMethod( bool hashArray[] , int & key)
             }
 
             linear++;
-            tries++;
         }
         hashArray[insertion] = true;
 }
 
-void primeProbingMethod( bool hashArray[] ,int & key)
+void primeProbingMethod( bool hashArray[] )
 {
-    int insertion = key;
+    int insertion = rand()%tableSize;
 
     if( hashArray[insertion] == false )
     {
@@ -73,10 +72,10 @@ void primeProbingMethod( bool hashArray[] ,int & key)
     }
 }
 
-void randomProbingMethod(  bool hashArray[] ,int & key)
+void randomProbingMethod(  bool hashArray[] )
 {
     int insertion, startInsertion;
-    insertion = startInsertion = key;
+    insertion = startInsertion = rand()%tableSize;
 
     while ( hashArray[insertion] == false )
     {
@@ -98,29 +97,18 @@ int main()
 {
     srand(time(0));
 
-    int key;
-    key = rand()%tableSize;
-
-//clearHashTable( hashedTable );
-//generateTable( hashedTable, 90, key);
-//
-// for( int i = 0; i<1000; i++)
-//     std::cout << hashedTable[i] << std::endl;
-//
-
     for (int i = 10; i <= 90; i+=5)
     {
 
         for (int j = 0; j < 1000; j++ )
         {
             clearHashTable( hashedTable );
-            std::cout << j << std::endl;
-            generateTable(hashedTable, i, key);
+            generateTable( hashedTable, i );
             for ( int k = 0; k < 1000; k ++ )
             {
-                linearProbingMethod( hashedTable, key );
-//                primeProbingMethod( hashedTable, key );
-//                randomProbingMethod( hashedTable, key );
+                linearProbingMethod( hashedTable );
+//                primeProbingMethod( hashedTable);
+//                randomProbingMethod( hashedTable );
             }
         }
         std::cout<< "Average probes for alpha = " << i << std::endl;
