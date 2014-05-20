@@ -43,6 +43,7 @@ void linearProbingMethod( bool hashArray[] )
         if ( hashArray[insertion] == false )
         {
             hashArray[insertion] = true;
+            insertion=(insertion+1)%tableSize; /* right? */
             break;
         }
         else 
