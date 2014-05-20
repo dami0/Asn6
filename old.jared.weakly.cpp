@@ -3,15 +3,13 @@
 #include <cmath>
 #include <cstdlib>
 
-bool hashedTable[1009] = {false} ;
 int tableSize = 1009 ;
-int key = rand()%tableSize;
 
-unsigned long long linear = 0, prime = 0, amtRandom = 0;
+long long linear = 0, prime = 0, amtRandom = 0;
 
 void clearHashTable( bool hashArray[] )
 {
-    for( int i; i < tableSize ; i++ )
+    for( int i = 0 ; i < tableSize ; i++ )
         hashArray[i] = false;
 }
 
@@ -25,11 +23,14 @@ void generateTable( bool hashArray[], int percentage )
 
     for(int i = 0; i < bound ; i++)
     {
-        while( hashArray[value] == true )
+        if ( hashArray[value] == false)
         {
-            value=(value*prime)%tableSize ;
+            hashArray[value] = true;
+            value=(value*prime)%tableSize;
+            break;
         }
-        hashArray[value] = true;
+        else
+            value=(value*prime)%tableSize;
     }
 }
 
@@ -37,38 +38,37 @@ void linearProbingMethod( bool hashArray[] )
 {
     int insertion = rand()%tableSize;
 
-        while (hashArray[insertion] == true)
+    for ( int i = 0; i < tableSize ; i++ )
+    {
+        if ( hashArray[insertion] == false )
         {
-            if(insertion < tableSize)
-                insertion++;
-            else 
-            {
-                insertion = 0;
-            }
-
+            hashArray[insertion] = true;
+            break;
+        }
+        else 
+        {
+            insertion=(insertion+1)%tableSize;
             linear++;
         }
-        hashArray[insertion] = true;
+    }
 }
 
 void primeProbingMethod( bool hashArray[] )
 {
     int insertion = rand()%tableSize;
 
-    if( hashArray[insertion] == false )
+    for ( int i = 0; i < tableSize ; i++ )
     {
-        hashArray[insertion] = true;
-        prime+=1;
-    }
-
-    else
-    {
-        while ( hashArray[insertion] == true )
+        if ( hashArray[insertion] == false )
         {
-            insertion = (insertion + 39) % tableSize;
-            prime+=1;
+            hashArray[insertion] = true;
+            break;
         }
-        hashArray[insertion] = true;
+        else 
+        {
+            insertion=(insertion*39)%tableSize;
+            prime++;
+        }
     }
 }
 
@@ -77,25 +77,26 @@ void randomProbingMethod(  bool hashArray[] )
     int insertion, startInsertion;
     insertion = startInsertion = rand()%tableSize;
 
-    while ( hashArray[insertion] == false )
+    for ( int i = 0; i < tableSize ; i++ )
     {
-        if( hashArray[insertion] == false )
+        if ( hashArray[insertion] == false )
         {
             hashArray[insertion] = true;
-            amtRandom+=1;
             break;
         }
-        else
+        else 
         {
-            insertion = ( key + 1 ) % 30;
-            amtRandom+=1;
+            insertion=(startInsertion +1)%30;
+            amtRandom++;
         }
     }
 }
 
 int main()
 {
-    srand(time(0));
+srand(time(NULL));
+bool hashedTable[1009] = {false} ;
+
 
     for (int i = 10; i <= 90; i+=5)
     {
@@ -107,8 +108,8 @@ int main()
             for ( int k = 0; k < 1000; k ++ )
             {
                 linearProbingMethod( hashedTable );
-//                primeProbingMethod( hashedTable);
-//                randomProbingMethod( hashedTable );
+                primeProbingMethod( hashedTable);
+                randomProbingMethod( hashedTable );
             }
         }
         std::cout<< "Average probes for alpha = " << i << std::endl;
